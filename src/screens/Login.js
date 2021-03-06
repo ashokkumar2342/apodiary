@@ -8,10 +8,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { openDatabase } from 'react-native-sqlite-storage';
 var db = openDatabase({ name: 'VoterDatabase.db' });
 let config = {
-    host:'65.0.152.5',
-    database:'admin_voter',
-    user:'admin_voter',
-    password:'admin_voter', 
+    host:'162.214.94.136',
+    database:'eageskoo_apodairy',
+    user:'eageskoo_1',
+    password:'Ashok@2342', 
     };
 export class Login extends Component {
     
@@ -60,50 +60,20 @@ export class Login extends Component {
         setSelectedValue: booth_id
         })
     } 
-	 checkLogin = async ()=>{
-     const {mobile_no,password}=this.state  
-      
-      try{
-          const connection = await MySqlConnection.createConnection(config);
-          let userdetails = await connection.executeQuery("SELECT id,d_code,b_code,v_code,max_sahayak FROM app_users WHERE mobile_no = '"+mobile_no+"' AND  password = '"+password+"' AND  status = 1 LIMIT 1");
-   
-          if (userdetails.length == 0) {
-            alert("Invalid Mobile and Password")
-          }else{
-            let sahayak_list = await connection.executeQuery("select count(*) as already_sahayak from sahayak_list where app_user_id = '"+userdetails[0].id+"'");
-            
-            if (userdetails[0].max_sahayak > sahayak_list[0].already_sahayak) {
-                let booth = await connection.executeQuery("SELECT id, booth_no,	b_name FROM booths WHERE d_code = '"+userdetails[0].d_code+"' AND  b_code = '"+userdetails[0].b_code+"' AND v_code = '"+userdetails[0].v_code+"' order by 'booth_no'");
-                this.setState({
-                        loading: false,
-                        userdetails: userdetails[0]
-                }) 
-                this.setState({
-                    loading: false,
-                    options: booth
-                })   
-            }else{
-                alert("Maximum "+sahayak_list[0].already_sahayak+" Sahayak Allowed Plz contact your admin.") 
-            }
-              
-          }   
-          connection.close(); 
-           
-      }catch(err){
-          
-      }  
- 
-     }
+	 
      configureData = async ()=>{  
          try {
+            const {mobile_no}=this.state  
+            alert(mobile_no)
+            return false
             const connection = await MySqlConnection.createConnection(config);
             
-            let boothdetails = await connection.executeQuery("SELECT * FROM booths WHERE id = '"+this.state.setSelectedValue+"' LIMIT 1"); 
+            let userdetails = await connection.executeQuery("SELECT * FROM app_user WHERE id = '"+mobile_no+"' LIMIT 1"); 
            
             // let insert = await connection.executeQuery("INSERT INTO sahayak_list (app_user_id, mobile_no, d_code, b_code, v_code, booth_no) values (1, 1234567890, d1, b1, v1, b1)");
             // console.log(insert[0])
-            if (boothdetails.length == 0) {
-                alert("Invalid Booth")
+            if (userdetails.length == 0) {
+                alert("Invalid User")
             }else{
                 let voters = await connection.executeQuery("SELECT * FROM voters WHERE d_code = '"+boothdetails[0].d_code+"' AND b_code = '"+boothdetails[0].b_code+"' AND  v_code = '"+boothdetails[0].v_code+"'");
                 
