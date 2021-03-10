@@ -43,7 +43,7 @@ export class Dashboard extends Component {
     headerLeft: null
     }  
 	 
-    goToProfile = () =>
+    syncData = () =>
     { 
         alert('sync')
     }
@@ -102,10 +102,10 @@ export class Dashboard extends Component {
         <View style={styles.container}> 
             <View style={styles.body}>
                 <View style={styles.bodyContent}>
-                    <TouchableOpacity activeOpacity = { .5 } onPress={ this.goToProfile }> 
+                    <TouchableOpacity activeOpacity = { .5 } onPress={ this.syncData }> 
                         <View style={styles.menuBox}>
                             <Icon name="user" size={30} color="#900" /> 
-                            <Text style={styles.info} onPress={() => this.goToProfile}>Profile</Text>
+                            <Text style={styles.info} onPress={() => this.syncData}>Sync</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity = { .5 } onPress={ this.searchVoter }> 
