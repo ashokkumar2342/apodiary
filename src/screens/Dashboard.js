@@ -9,10 +9,10 @@ import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 var db = openDatabase({ name: 'VoterDatabase.db' });
 let config = {
-  host:'65.0.152.5',
-  database:'admin_voter',
-  user:'admin_voter',
-  password:'admin_voter', 
+  host:'162.214.94.136',
+  database:'eageskoo_apodairy',
+  user:'eageskoo_1',
+  password:'Ashok@2342', 
   };
 
 export class Dashboard extends Component {
@@ -42,19 +42,13 @@ export class Dashboard extends Component {
 	static navigationOptions = {
     headerLeft: null
     }  
-	 setOptionValue = async (class_id)=>{ 
-        this.setState({ 
-        setSelectedValue: class_id
-        })
-    } 
+	 
     goToProfile = () =>
     { 
-        this.props.navigation.push('Profile')
+        alert('sync')
     }
     searchVoter = () =>
-    {
-        
-     console.log(this.props.navigation.navigate)
+    { 
        console.log('search')
         this.props.navigation.push('SearchVoter')
     }
@@ -120,30 +114,7 @@ export class Dashboard extends Component {
                             <Text style={styles.info} onPress={() => this.searchVoter}>Search Voter</Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity activeOpacity = { .5 } onPress={ this.goToProfile }> 
-                        <View style={styles.menuBox}>
-                            <Icon name="rocket" size={30} color="#900" /> 
-                            <Text style={styles.info} onPress={() => this.goToProfile}>Parivaar Mapping</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity activeOpacity = { .5 } onPress={ this.goToProfile }> 
-                        <View style={styles.menuBox}>
-                            <Icon name="rocket" size={30} color="#900" /> 
-                            <Text style={styles.info} onPress={() => this.goToProfile}>Profile</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity activeOpacity = { .5 } onPress={ this.goToProfile }> 
-                        <View style={styles.menuBox}>
-                            <Icon name="rocket" size={30} color="#900" /> 
-                            <Text style={styles.info} onPress={() => this.goToProfile}>Profile</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity activeOpacity = { .5 } onPress={ this.goToProfile }> 
-                        <View style={styles.menuBox}>
-                            <Icon name="rocket" size={30} color="#900" /> 
-                            <Text style={styles.info} onPress={() => this.goToProfile}>Profile</Text>
-                        </View>
-                    </TouchableOpacity>
+                   
                     <TouchableOpacity activeOpacity = { .5 } onPress={ this.uninstallvapp }> 
                         <View style={styles.menuBox}>
                             <Icon name="rocket" size={30} color="#900" /> 
