@@ -31,28 +31,28 @@ export class Login extends Component {
 	}; 
   }
   
-  componentDidMount(){     
-    let check ='';
-    db.transaction(function(txn) {  
-              txn.executeSql(
-                'SELECT count(*) as total FROM voters',
-                [],
-                function(txt,res){ 
-                    check= res.rows.item(0).total 
-                    console.log('ok')
-                }
-              ); 
+  // componentDidMount(){     
+  //   let check ='';
+  //   db.transaction(function(txn) {  
+  //             txn.executeSql(
+  //               'SELECT count(*) as total FROM voters',
+  //               [],
+  //               function(txt,res){ 
+  //                   check= res.rows.item(0).total 
+  //                   console.log('ok')
+  //               }
+  //             ); 
         
-      }); 
-    setTimeout(() => { 
-        if(check == 0){ 
-            console.log(check)
-        } else{
-        this.props.navigation.navigate('Dashboard'); 
+  //     }); 
+  //   setTimeout(() => { 
+  //       if(check == 0){ 
+  //           console.log(check)
+  //       } else{
+  //       this.props.navigation.navigate('Dashboard'); 
             
-        }
-    }, 100) 
-  }
+  //       }
+  //   }, 100) 
+  // }
   
 	static navigationOptions={
 		header :null

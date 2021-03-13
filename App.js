@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, Text , Button,StyleSheet,TextInput, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import Loader from './src/screens/Loader';
 import Login from './src/screens/Login';
 import { Dashboard } from './src/screens/Dashboard';
 
@@ -41,7 +42,8 @@ function App() {
   
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="Loader">
+        <Stack.Screen name="Loader" component={Loader} />
         <Stack.Screen name="Home" component={Login} />
         <Stack.Screen name="Dashboard" options={{
           

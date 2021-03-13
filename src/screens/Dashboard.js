@@ -1,6 +1,6 @@
  
 import React, { Component } from 'react';
-import { BackHandler,View, Text , ScrollView,TextInput,TouchableOpacity,StyleSheet,Alert,Picker,AsyncStorage} from 'react-native';
+import { BackHandler,View, Text , ScrollView,TextInput,TouchableOpacity,StyleSheet,Alert,Picker,AsyncStorage,InteractionManager} from 'react-native';
 import MySqlConnection from 'react-native-my-sql-connection'; 
 import { openDatabase } from 'react-native-sqlite-storage';
 import Icon from 'react-native-vector-icons/FontAwesome'; 
@@ -25,6 +25,8 @@ var m_activity_no;
 let m_status_activity = [];
 let m_flag_activity = [];
 
+var m_time_count=0;
+
 let config = {
   host:'162.214.94.136',
   database:'eageskoo_apodairy',
@@ -47,11 +49,22 @@ export class Dashboard extends Component {
       booth:[],      
       options:[],
       setSelectedValue:'',
+      
+      btn_activity_status:0,
+      btn1_activity_name:'',
+      btn2_activity_name:'Update Party Dispatch',
+
+      activities_name:['', 'Party Dispatch', 'Party Reached', 'Booth Setup'],
+
 		   }; 
   }
   
     componentDidMount() {
+
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButton.bind(this));
+
+        this.check_app_users_status();
+        console.log("componentDidMount");
     }
     handleBackButton(){
         BackHandler.exitApp();
@@ -60,6 +73,63 @@ export class Dashboard extends Component {
     headerLeft: null
     }  
 	
+  click_update_reset_btn = async (PvActivityNo,PvUpdate_Reset)=>{
+    console.log("Button Clicked : Activity No - ", PvActivityNo, "Update Reset - ", PvUpdate_Reset);
+    db.transaction(function(txn) {  
+      txn.executeSql(
+        'Update `activity_status_' + PvActivityNo + '` set `activity_status` = ' + PvUpdate_Reset + ', upload_flag = 1',
+        [],
+      );
+      // console.log('Update `activity_status_' + PvActivityNo + '` set `activity_status` = ' + PvUpdate_Reset + ', upload_flag = 1');
+      if(PvUpdate_Reset == 1){
+        txn.executeSql(
+          'Update `polling_activity_status` set `activity_status` = ' + PvActivityNo + ', upload_flag = 1',
+          [],
+        );
+      }else{
+        txn.executeSql(
+          'Update `polling_activity_status` set `activity_status` = ' + PvActivityNo-1 + ', upload_flag = 1',
+          [],
+        );
+      }
+    });
+    setTimeout(() => {
+      if(PvUpdate_Reset == 1){
+        this.setState({
+          btn_activity_status: PvActivityNo, btn1_activity_name: 'Reset '+this.state.activities_name[PvActivityNo], btn2_activity_name:'Update '+this.state.activities_name[PvActivityNo+1]  
+        })  
+      }else{
+        this.setState({
+          btn_activity_status: PvActivityNo-1, btn1_activity_name: 'Reset '+this.state.activities_name[PvActivityNo-1], btn2_activity_name:'Update '+this.state.activities_name[PvActivityNo]
+        })
+      }
+    },500);
+  }
+
+  check_app_users_status(){
+    console.log("check_app_users_status :: Begin");
+    let l_status=-1;
+    db.transaction(function(txn) {  
+      txn.executeSql(
+        'SELECT `activity_status` FROM `polling_activity_status`',
+        [],
+        (tx, results) => {
+          l_status=results.rows.item(0).activity_status
+          this.setState({
+            btn_activity_status: results.rows.item(0).activity_status  
+          })
+
+        }
+      ); 
+        
+    });
+    setTimeout(() => {console.log("Check User Status value : ",l_status);
+      this.setState({
+          btn_activity_status:l_status, btn1_activity_name: 'Reset '+this.state.activities_name[l_status], btn2_activity_name: 'Update '+this.state.activities_name[l_status+1]  
+        })
+    },500);
+  }
+
   syncDataPollActivity (pv_activity_no)
   {
     try{
@@ -85,7 +155,7 @@ export class Dashboard extends Component {
   }
 
 
-  syncDataPre = async ()=>
+  syncDataPre  = async ()=>
   {
     console.log('Pre Start');
     try{
@@ -202,7 +272,11 @@ export class Dashboard extends Component {
       for (var l_counter=1; l_counter <= 11; l_counter++){
         if(m_activity_status>=l_counter){
           // console.log('in (1) ', m_upload_flag, ' - ', m_activity_status);
-          this.syncDataPollActivity(l_counter);    
+          // setTimeout(() => {render : this.syncDataPollActivity(l_counter);},300);
+          // InteractionManager.runAfterInteractions(() => {
+            render : this.syncDataPollActivity(l_counter);  
+          // });
+              
         };  
       }
       
@@ -237,8 +311,16 @@ export class Dashboard extends Component {
 
     syncData = async ()=>
     {
-      render : (this.syncDataPre());
-      render : (this.syncDataPost());
+      // InteractionManager.runAfterInteractions(() => {
+        render : (this.syncDataPre());  
+      // });
+      InteractionManager.runAfterInteractions(() => {
+        render : (this.syncDataPost());  
+      });
+      // render : (this.syncDataPre());
+      // setTimeout(() => {render : (this.syncDataPre());},1000);
+      // setTimeout(() => {render : (this.syncDataPost());},1000);
+      
       // this.syncDataPost();
     }
 
@@ -317,9 +399,38 @@ export class Dashboard extends Component {
                             <Text style={styles.info} onPress={() => this.uninstallvapp}>Uninstall</Text>
                         </View>
                     </TouchableOpacity>
+
+                    <TouchableOpacity activeOpacity = { .5 } onPress={ () => this.click_update_reset_btn(this.state.btn_activity_status,0) }> 
+                        <View style={styles.menuBox}>
+                            <Icon name="rocket" size={30} color="#900" /> 
+                            <Text style={styles.info} onPress={() => this.click_update_reset_btn(this.state.btn_activity_status,0)}>{this.state.btn1_activity_name}</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity = { .5 } onPress={ () => this.click_update_reset_btn(this.state.btn_activity_status+1,1) }> 
+                        <View style={styles.menuBox}>
+                            <Icon name="rocket" size={30} color="#900" /> 
+                            <Text style={styles.info} onPress={() => this.click_update_reset_btn(this.state.btn_activity_status+1,1)}>{this.state.btn2_activity_name}</Text>
+                        </View>
+                    </TouchableOpacity>
                 </View> 
             </View>
+            <View style={styles.textBox}> 
+                <View style={styles.list}>
+                  <Text>Total Vote Polled : 100</Text>
+                </View> 
+                <View style={styles.list}>
+                  <Text>Total Vote Polled : 100</Text>
+                </View> 
+                 
+            </View>
+
         </View>
+       
+            
+             
+             
+             
+
     </ScrollView>
 
     )
@@ -451,8 +562,8 @@ const styles = StyleSheet.create({
     list:{
       paddingVertical: 2,
       margin: 2,
-      backgroundColor: "#5d5b5b",
-      fontSize:22, 
+      color: "#333333",
+      fontSize:30, 
       padding:5,
       fontWeight:'600',
       
@@ -466,7 +577,15 @@ const styles = StyleSheet.create({
     },
     col: {
       width: '50%' // is 50% of container width
-    }
+    },
+    textBox: {  
+    backgroundColor:'white',
+    borderRadius: 10,
+    paddingHorizontal:16,
+    fontSize:16,
+    color:'#ffffff',
+    marginVertical: 10,
+  },
      
   });
 
