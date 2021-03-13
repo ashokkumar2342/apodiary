@@ -2,9 +2,6 @@
 import React, { Component } from 'react';
 import { View, Switch, Text ,ScrollView, TextInput,TouchableOpacity,StyleSheet,Linking,Alert,Picker,AsyncStorage} from 'react-native';
 import MySqlConnection from 'react-native-my-sql-connection';
-import Button from 'react-native-material-ui';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack'; 
 import { openDatabase } from 'react-native-sqlite-storage';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import Icon from 'react-native-vector-icons/FontAwesome'; 
@@ -17,14 +14,14 @@ export class VotePoll extends Component {
 		this.state = { 
         loading: true, 
         userdetails:[],  
-        id:props.route.params.id,  
-        vote_polled:props.route.params.vote_polled,  
-        favour_status:props.route.params.favour_status, 
+        serial_number:props.route.params.serial_number,  
+        vote_polled:props.route.params.vote_polled,   
        
 	}; 
   }
   
   componentDidMount(){   
+    console.log(this.state.serial_number)
   }
    
     isVotePolled = async ()=>{ 

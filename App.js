@@ -5,6 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Loader from './src/screens/Loader';
 import Login from './src/screens/Login';
 import { Dashboard } from './src/screens/Dashboard';
+import { SearchVoter } from './src/screens/SearchVoter';
+import { VotePoll } from './src/screens/VotePoll';
 
 function HomeScreen({ navigation }) { 
   
@@ -30,10 +32,15 @@ const DashboardStack = createStackNavigator();
 function DashboardStak() {
   return (
     <DashboardStack.Navigator>
-      <DashboardStack.Screen options={{          
+        <DashboardStack.Screen options={{          
           headerLeft: () =>  null,
         }} name="Dashboard" component={Dashboard} />
-      
+        <DashboardStack.Screen  name="SearchVoter"  component={SearchVoter} options={{ 
+           title: 'Search Voter' ,
+        }} />
+        <DashboardStack.Screen  name="VotePoll"  component={VotePoll} options={{ 
+           title: 'Vote Poll' ,
+        }} />
     </DashboardStack.Navigator>
   );
 }
