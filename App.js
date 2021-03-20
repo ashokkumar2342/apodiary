@@ -51,7 +51,7 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Loader">
         <Stack.Screen name="Loader" component={Loader} />
-        <Stack.Screen name="Home" component={Login} />
+        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Dashboard" options={{
           
           headerLeft: () =>  null,

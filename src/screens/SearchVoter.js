@@ -19,7 +19,11 @@ export class SearchVoter extends Component {
 	    super(props);
 	    this.state = { text: 'Useless Placeholder' }; 
       this.state = { 
-        loading: false, 
+        loading: false,
+        ward_no:0,
+        print_srno:0,
+        epic_no:'',
+        route_source:2,
         userdetails:[],  
         result: 'No result',
         barcode: '',
@@ -118,102 +122,43 @@ export class SearchVoter extends Component {
         </View>
       );
     }
- 
+  
     render() {
-      return (
-        <View style={styles.container}>
-          <RNCamera
-              ref={ref => {
-                this.camera = ref;
-              }}
-              defaultTouchToFocus
-              flashMode={this.state.camera.flashMode}
-              mirrorImage={false}
-              onBarCodeRead={this.onBarCodeRead.bind(this)}
-              onFocusChanged={() => {}}
-              onZoomChanged={() => {}}
-            //   permissionDialogTitle={'Permission to use camera'}
-            //   permissionDialogMessage={'We need your permission to use your camera phone'}
-              style={styles.preview}
-              type={this.state.camera.type}  
-          />
-          <View style={[styles.overlay, styles.topOverlay]}>
-          <Text style={styles.scanScreenMessage}>Please scan the barcode.</Text>
-        </View>
-        <View style={[styles.overlay, styles.bottomOverlay]}>
-            <TextInput style={styles.inputBox} 
-                underlineColorAndroid='rgba(0,0,0,0)' 
-                placeholder="Enter Serial No"
-                placeholderTextColor = "#ffffff"
-                selectionColor="#fff"
-                keyboardType="numeric"
-                onChangeText={text=> this.setState({serial_number:text})}
-                />
-            <TouchableOpacity style={styles.button} >
-            <Text
-            onPress={() => {  this.props.navigation.navigate('VotePoll',{serial_number:this.state.serial_number}) }}
-            style={styles.enterBarcodeManualButton}
-            title="Go"
-           >Submit</Text>
-                
-                
-            </TouchableOpacity>      
-        </View>
-        </View>
-      );
-   }
+    return (
+
+          <View style={styles.container}>
+              <TextInput style={styles.inputBox} 
+                  underlineColorAndroid='rgba(0,0,0,0)' 
+                  placeholder="Enter Serial Number No"
+                  placeholderTextColor = "#ffffff"
+                  selectionColor="#fff"
+                  keyboardType="numeric"
+                  onChangeText={text=> this.setState({print_srno:text})}
+                  />
+                <TouchableOpacity style={styles.button} >
+                 <Text style={styles.buttonText}  onPress={() => {  this.props.navigation.navigate('VotePoll',{serial_number:this.state.print_srno,ward_no:20,input_source:2}) }}>Go</Text>
+                 
+               </TouchableOpacity>  
+          </View>
+
+     
+       
+
+    )
+  }
+
 }
 
-const styles = {
-  container: {
-    flex: 1
-  },
-  preview: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center', 
-  },
-  overlay: {
-    position: 'absolute',
-    padding: 16,
-    right: 0,
-    left: 0,
+const styles = StyleSheet.create({
+  container : {
+    backgroundColor:'#455a64',
+    flexGrow: 1,
+    justifyContent:'center',
     alignItems: 'center'
+
   },
-  topOverlay: {
-    top: 0,
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  bottomOverlay: {
-    bottom: 0,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  enterBarcodeManualButton: {
-    padding: 15,
-    backgroundColor: 'white',
-    borderRadius: 40
-  },
-  scanScreenMessage: {
-    fontSize: 14,
-    color: 'white',
-    textAlign: 'center',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  buttonInput: {
-    width:300,
-    backgroundColor:'rgba(255, 255,255,0.2)',
-    borderRadius: 25,
-    marginVertical: 10,
-	  paddingVertical: 13,
-	  color:'#ffffff',
-  },
+
+
   inputBox: {
     width:300,
     backgroundColor:'rgba(255, 255,255,0.2)',
@@ -223,12 +168,25 @@ const styles = {
     color:'#ffffff',
     marginVertical: 10
   },
+  button: {
+    width:300,
+    backgroundColor:'#1c313a',
+     borderRadius: 25,
+      marginVertical: 10,
+      paddingVertical: 13
+  }, 
   buttonText: {
     fontSize:16,
     fontWeight:'500',
     color:'#ffffff',
     textAlign:'center'
   },
-};
+  buttonTextRight: {
+    fontSize:16,
+    fontWeight:'500',
+    color:'#ffffff',
+    textAlign:'right'
+  }
+});
 
 export default SearchVoter

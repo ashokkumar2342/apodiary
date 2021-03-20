@@ -45,7 +45,7 @@ export class Loader extends Component {
 
   componentDidMount(){
     this.check_app_users();
-    setTimeout(() => {if(m_check == 0){ 
+    setTimeout(() => {if(m_check <= 0){ 
         this.props.navigation.navigate('Login');
       }else if(m_check > 0){
         this.props.navigation.navigate('Dashboard');        
