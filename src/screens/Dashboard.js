@@ -447,6 +447,7 @@ export class Dashboard extends Component {
                     </TouchableOpacity>
                 </View> 
             </View>
+           
             <View style={styles.textBox}> 
                 <View style={styles.list}>
                   <Text>Total Voters : {this.state.s_total_v}</Text>

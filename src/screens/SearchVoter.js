@@ -96,10 +96,10 @@ export class SearchVoter extends Component {
   
      
     onBarCodeRead(scanResult) {
-      
+      console.log(scanResult.data)
         if (scanResult.data != null) {
             if (this.state.isBarcodeScannerEnabled) {
-                this.props.navigation.navigate('VotePoll',{serial_number:scanResult.data})
+                this.props.navigation.navigate('VotePoll',{epic_no:scanResult.data,input_source:1})
                 this.setState({
                     isBarcodeScannerEnabled: false
                 })
@@ -123,42 +123,134 @@ export class SearchVoter extends Component {
       );
     }
   
-    render() {
-    return (
-
-          <View style={styles.container}>
-              <TextInput style={styles.inputBox} 
-                  underlineColorAndroid='rgba(0,0,0,0)' 
-                  placeholder="Enter Serial Number No"
-                  placeholderTextColor = "#ffffff"
-                  selectionColor="#fff"
-                  keyboardType="numeric"
-                  onChangeText={text=> this.setState({print_srno:text})}
+    render() { 
+        return (
+                <View style={styles.container}>
+                  <RNCamera
+                      ref={ref => {
+                        this.camera = ref;
+                      }}
+                      defaultTouchToFocus
+                      flashMode={this.state.camera.flashMode}
+                      mirrorImage={false}
+                      onBarCodeRead={this.onBarCodeRead.bind(this)}
+                      onFocusChanged={() => {}}
+                      onZoomChanged={() => {}}
+                    //   permissionDialogTitle={'Permission to use camera'}
+                    //   permissionDialogMessage={'We need your permission to use your camera phone'}
+                      style={styles.preview}
+                      type={this.state.camera.type}  
                   />
-                <TouchableOpacity style={styles.button} >
-                 <Text style={styles.buttonText}  onPress={() => {  this.props.navigation.navigate('VotePoll',{serial_number:this.state.print_srno,ward_no:20,input_source:2}) }}>Go</Text>
-                 
-               </TouchableOpacity>  
-          </View>
-
-     
-       
-
-    )
+                  <View style={[styles.overlay, styles.topOverlay]}>
+                  <Text style={styles.scanScreenMessage}>Please scan the barcode.</Text>
+                </View>
+                <View style={[styles.overlay2, styles.bottomOverlay2]}>
+                <TextInput style={styles.inputBox} 
+                    underlineColorAndroid='rgba(0,0,0,0)' 
+                    placeholder="Enter Word No"
+                    placeholderTextColor = "#ffffff"
+                    selectionColor="#fff"
+                    keyboardType="numeric"
+                    onChangeText={text=> this.setState({ward_no:text})}
+                    />
+                        
+                </View>
+                <View style={[styles.overlay, styles.bottomOverlay]}>
+                    <TextInput style={styles.inputBox} 
+                        underlineColorAndroid='rgba(0,0,0,0)' 
+                        placeholder="Enter Serial No"
+                        placeholderTextColor = "#ffffff"
+                        selectionColor="#fff"
+                        keyboardType="numeric"
+                        onChangeText={text=> this.setState({print_srno:text})}
+                        />
+                    <TouchableOpacity style={styles.button} >
+                    <Text
+                    onPress={() => {  this.props.navigation.navigate('VotePoll',{serial_number:this.state.print_srno,ward_no:this.state.ward_no,input_source:2}) }}
+                    style={styles.enterBarcodeManualButton}
+                    title="Go"
+                   >Submit</Text>
+                        
+                        
+                    </TouchableOpacity>      
+                </View>
+                </View>
+          );
   }
 
 }
 
-const styles = StyleSheet.create({
-  container : {
-    backgroundColor:'#455a64',
-    flexGrow: 1,
-    justifyContent:'center',
-    alignItems: 'center'
-
+const styles = {
+  container: {
+    flex: 1
   },
-
-
+  preview: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center', 
+  },
+  overlay: {
+    position: 'absolute',
+    padding: 16,
+    right: 0,
+    left: 0,
+    alignItems: 'center'
+  },
+  topOverlay: {
+    top: 0,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  bottomOverlay: {
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+   overlay2: {
+    position: 'absolute',
+    padding: 16,
+    right: 0,
+    left: 0,
+    alignItems: 'center'
+  },
+  topOverlay2: {
+    top: 0,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  bottomOverlay2: {
+    bottom: 80,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  enterBarcodeManualButton: {
+    padding: 15,
+    backgroundColor: 'white',
+    borderRadius: 40
+  },
+  scanScreenMessage: {
+    fontSize: 14,
+    color: 'white',
+    textAlign: 'center',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  buttonInput: {
+    width:300,
+    backgroundColor:'rgba(255, 255,255,0.2)',
+    borderRadius: 25,
+    marginVertical: 10,
+      paddingVertical: 13,
+      color:'#ffffff',
+  },
   inputBox: {
     width:300,
     backgroundColor:'rgba(255, 255,255,0.2)',
@@ -168,25 +260,12 @@ const styles = StyleSheet.create({
     color:'#ffffff',
     marginVertical: 10
   },
-  button: {
-    width:300,
-    backgroundColor:'#1c313a',
-     borderRadius: 25,
-      marginVertical: 10,
-      paddingVertical: 13
-  }, 
   buttonText: {
     fontSize:16,
     fontWeight:'500',
     color:'#ffffff',
     textAlign:'center'
   },
-  buttonTextRight: {
-    fontSize:16,
-    fontWeight:'500',
-    color:'#ffffff',
-    textAlign:'right'
-  }
-});
+};
 
 export default SearchVoter

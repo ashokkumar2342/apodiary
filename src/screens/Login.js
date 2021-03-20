@@ -5,6 +5,7 @@ import MySqlConnection from 'react-native-my-sql-connection';
 import Button from 'react-native-material-ui';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'; 
+import SmsRetriever from 'react-native-sms-retriever';
 import { openDatabase } from 'react-native-sqlite-storage';
 var db = openDatabase({ name: 'VoterDatabase.db' });
 
@@ -28,6 +29,7 @@ export class Login extends Component {
       booth:[],      
       options:[],
       setSelectedValue:'', 
+      mobile_no:'Select Mobile No'
 	}; 
   }
   
@@ -549,31 +551,41 @@ export class Login extends Component {
          }
          
     
-      // this.props.navigation.navigate('Dashboard');
+      this.props.navigation.navigate('Dashboard');
     //   navigation.navigate('Dashboard')
     
 
           
      } 
-	 
+	onPhoneNumberPressed = async () => {
+        try { 
+        const phoneNumber = await SmsRetriever.requestPhoneNumber(); 
+        var number = phoneNumber.replace(/\D/g, '').slice(-10);
+        console.log(number)
+        this.setState({
+        loading: false,
+        mobile_no: number
+        })    
+        } catch (error) {
+        console.log(JSON.stringify(error));
+        }
+    };
   render() {
-    return (
-      <View style={styles.container}>
-          <TextInput style={styles.inputBox} 
-              underlineColorAndroid='rgba(0,0,0,0)' 
-              placeholder="Enter Mobile No"
-              placeholderTextColor = "#ffffff"
-              selectionColor="#fff"
-              keyboardType="numeric"
-              onChangeText={text=> this.setState({mobile_no:text})}
-              />
-            <TouchableOpacity style={styles.button} >
-             <Text style={styles.buttonText}  onPress={() => this.configureData()}>Configure Data</Text>
+      return (
+        <View style={styles.container}>
+            
+            <TouchableOpacity style={styles.buttonInput} >
+               <Text style={styles.buttonTextInput}  onPress={() => this.onPhoneNumberPressed()}>{this.state.mobile_no}</Text>
+               
+                </TouchableOpacity> 
+              <TouchableOpacity style={styles.button} >
+               <Text style={styles.buttonText}  onPress={() => this.configureData()}>Configure Data</Text>
+               
+             </TouchableOpacity>  
              
-           </TouchableOpacity>  
-  		</View>
+            </View>
 
-    )
+      )
   }
 }
 
@@ -614,6 +626,14 @@ const styles = StyleSheet.create({
     fontWeight:'500',
     color:'#ffffff',
     textAlign:'right'
+  },
+   buttonInput: {
+    width:300,
+    backgroundColor:'rgba(255, 255,255,0.2)',
+    borderRadius: 25,
+    marginVertical: 10,
+      paddingVertical: 13,
+      color:'#ffffff',
   }
 });
 

@@ -54,7 +54,7 @@ export class VotePoll extends Component {
 
     if(this.state.input_source == 2){
       // l_query = "SELECT * FROM voters where ward_id = " + l_ward_id + " and print_sr_no = "+ l_sr_no;
-      l_query = "Select `vt`.`id`, `vt`.`voter_card_no`, `vt`.`name_l`, `vt`.`father_name_l`, `vt`.`age`, `vt`.`gender_id`, `vt`.`relation`, `vt`.`polled_status`, `vt`.`print_sr_no`, `wv`.`ward_no`  From `voters` `vt` inner join `ward_villages` `wv` on `wv`.`id` = `vt`.`ward_id` where `vt`.`ward_id` = " + l_ward_id + " and `vt`.`print_sr_no` = " + l_sr_no
+      l_query = "Select `vt`.`id`, `vt`.`voter_card_no`, `vt`.`name_l`, `vt`.`father_name_l`, `vt`.`age`, `vt`.`gender_id`, `vt`.`relation`, `vt`.`polled_status`, `vt`.`print_sr_no`, `wv`.`ward_no`  From `voters` `vt` inner join `ward_villages` `wv` on `wv`.`id` = `vt`.`ward_id` where `wv`.`ward_no` = " + l_ward_id + " and `vt`.`print_sr_no` = " + l_sr_no
       
     }else{
       l_query = "Select `vt`.`id`, `vt`.`voter_card_no`, `vt`.`name_l`, `vt`.`father_name_l`, `vt`.`age`, `vt`.`gender_id`, `vt`.`relation`, `vt`.`polled_status`, `vt`.`print_sr_no`, `wv`.`ward_no`  From `voters` `vt` inner join `ward_villages` `wv` on `wv`.`id` = `vt`.`ward_id` where `vt`.`voter_card_no` = '" + l_epic_no + "'"
@@ -257,6 +257,12 @@ export class VotePoll extends Component {
                   <Text>क्रम संख्या : {this.state.serial_number}</Text>
                 </View> 
             </View>
+            <TouchableOpacity style={styles.button} >
+              <Text style={styles.buttonText}  onPress={() => this.props.navigation.navigate('SearchVoter')}>Back Search Voter</Text> 
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} >
+              <Text style={styles.buttonText}  onPress={() => this.props.navigation.navigate('Dashboard')}>Go To Dashboard</Text> 
+            </TouchableOpacity>
           </View> 
          
           
