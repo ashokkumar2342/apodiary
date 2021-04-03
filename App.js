@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text , Button,StyleSheet,TextInput, TouchableOpacity } from 'react-native';
+import { View, Text , Button,StyleSheet,TextInput, TouchableOpacity,Image  } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Loader from './src/screens/Loader';
@@ -7,7 +7,15 @@ import Login from './src/screens/Login';
 import { Dashboard } from './src/screens/Dashboard';
 import { SearchVoter } from './src/screens/SearchVoter';
 import { VotePoll } from './src/screens/VotePoll';
+import { QueueUpdate } from './src/screens/QueueUpdate';
 
+function ActionBarIcon() {
+  return (
+    <Image
+    source={{uri : 'https://secure.gravatar.com/avatar/dbbab0050db2dbd84d4e2c844196ee0c?s=60&d=mm&r=g'}}
+    style={{ width: 40, height: 40, borderRadius: 40/2, marginLeft : 15 }} />
+  );
+}
 function HomeScreen({ navigation }) { 
   
   return (
@@ -33,13 +41,17 @@ function DashboardStak() {
   return (
     <DashboardStack.Navigator>
         <DashboardStack.Screen options={{          
-          headerLeft: () =>  null,
+          
+          headerLeft : props => <ActionBarIcon {...props} />
         }} name="Dashboard" component={Dashboard} />
         <DashboardStack.Screen  name="SearchVoter"  component={SearchVoter} options={{ 
            title: 'Search Voter' ,
         }} />
         <DashboardStack.Screen  name="VotePoll"  component={VotePoll} options={{ 
            title: 'Vote Poll' ,
+        }} />
+        <DashboardStack.Screen  name="QueueUpdate"  component={QueueUpdate} options={{ 
+           title: 'Queue Update' ,
         }} />
     </DashboardStack.Navigator>
   );

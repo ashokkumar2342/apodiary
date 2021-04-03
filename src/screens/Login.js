@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { View, Text , TextInput,TouchableOpacity,StyleSheet,Alert,Picker,AsyncStorage} from 'react-native';
+import { View,Text,Image,TextInput,TouchableOpacity,StyleSheet,Alert,Picker,AsyncStorage} from 'react-native';
 import MySqlConnection from 'react-native-my-sql-connection';
 import Button from 'react-native-material-ui';
 import { NavigationContainer } from '@react-navigation/native';
@@ -572,8 +572,14 @@ export class Login extends Component {
     };
   render() {
       return (
-        <View style={styles.container}>
-            
+        <View style={styles.container}> 
+            <Image
+               style={{width: 50, height: 50}}
+               source={{uri: 'http://eageskool.com/skool/public/front_asset/images/logo.png'}}
+               resizeMode={'cover'} // cover or contain its upto you view look
+               />
+      
+
             <TouchableOpacity style={styles.buttonInput} >
                <Text style={styles.buttonTextInput}  onPress={() => this.onPhoneNumberPressed()}>{this.state.mobile_no}</Text>
                

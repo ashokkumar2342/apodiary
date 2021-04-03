@@ -104,46 +104,51 @@ export class Dashboard extends Component {
   click_update_reset_btn = async (PvActivityNo,PvUpdate_Reset)=>{
     if(PvActivityNo>0){
       if(PvActivityNo<12){
-        db.transaction(function(txn) {  
-          txn.executeSql(
-            'Update `activity_status_' + PvActivityNo + '` set `activity_status` = ' + PvUpdate_Reset + ', upload_flag = 1',
-            [],
-          );
-          // console.log('Update `activity_status_' + PvActivityNo + '` set `activity_status` = ' + PvUpdate_Reset + ', upload_flag = 1');
-          if(PvUpdate_Reset == 1){
+        if(PvActivityNo!=7){
+          db.transaction(function(txn) {  
             txn.executeSql(
-              'Update `polling_activity_status` set `activity_status` = ' + PvActivityNo + ', upload_flag = 1',
+              'Update `activity_status_' + PvActivityNo + '` set `activity_status` = ' + PvUpdate_Reset + ', upload_flag = 1',
               [],
             );
-          }else{
-            txn.executeSql(
-              'Update `polling_activity_status` set `activity_status` = ' + PvActivityNo-1 + ', upload_flag = 1',
-              [],
-            );
-          }
-        });
-        
-        setTimeout(() => {
-          m_status_activity[PvActivityNo] = PvUpdate_Reset;
-          m_flag_activity[PvActivityNo] = 1;
-          this.setState({
-            s_status_activity:m_status_activity,
-            s_flag_activity:m_flag_activity,
-            s_upload_flag:1,
-          })
-
-          if(PvUpdate_Reset == 1){
+            // console.log('Update `activity_status_' + PvActivityNo + '` set `activity_status` = ' + PvUpdate_Reset + ', upload_flag = 1');
+            if(PvUpdate_Reset == 1){
+              txn.executeSql(
+                'Update `polling_activity_status` set `activity_status` = ' + PvActivityNo + ', upload_flag = 1',
+                [],
+              );
+            }else{
+              txn.executeSql(
+                'Update `polling_activity_status` set `activity_status` = ' + PvActivityNo-1 + ', upload_flag = 1',
+                [],
+              );
+            }
+          });
+          
+          setTimeout(() => {
+            m_status_activity[PvActivityNo] = PvUpdate_Reset;
+            m_flag_activity[PvActivityNo] = 1;
             this.setState({
-              btn_activity_status: PvActivityNo, btn1_activity_name: 'Reset '+this.state.activities_name[PvActivityNo], btn2_activity_name:'Update '+this.state.activities_name[PvActivityNo+1],
-              s_activity_status:PvActivityNo,  
-            })  
-          }else{
-            this.setState({
-              btn_activity_status: PvActivityNo-1, btn1_activity_name: 'Reset '+this.state.activities_name[PvActivityNo-1], btn2_activity_name:'Update '+this.state.activities_name[PvActivityNo],
-              s_activity_status:PvActivityNo-1,
+              s_status_activity:m_status_activity,
+              s_flag_activity:m_flag_activity,
+              s_upload_flag:1,
             })
-          }
-        },500);  
+
+            if(PvUpdate_Reset == 1){
+              this.setState({
+                btn_activity_status: PvActivityNo, btn1_activity_name: 'Reset '+this.state.activities_name[PvActivityNo], btn2_activity_name:'Update '+this.state.activities_name[PvActivityNo+1],
+                s_activity_status:PvActivityNo,  
+              })  
+            }else{
+              this.setState({
+                btn_activity_status: PvActivityNo-1, btn1_activity_name: 'Reset '+this.state.activities_name[PvActivityNo-1], btn2_activity_name:'Update '+this.state.activities_name[PvActivityNo],
+                s_activity_status:PvActivityNo-1,
+              })
+            }
+          },500);  
+        }else{
+          this.setState({s_refreshed:0,});
+          this.props.navigation.push('QueueUpdate')  
+        }  
       }else{
         console.log("not valid");  
       } 
@@ -406,27 +411,27 @@ export class Dashboard extends Component {
                 <View style={styles.bodyContent}>
                     <TouchableOpacity activeOpacity = { .5 } onPress={ this.syncData }> 
                         <View style={styles.menuBox}>
-                            <Icon name="user" size={30} color="#900" /> 
+                            <Icon name="upload" size={30} color="#FF4500" /> 
                             <Text style={styles.info} onPress={() => this.syncData}>Sync</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity = { .5 } onPress={ this.searchVoter }> 
                         <View style={styles.menuBox}>
-                            <Icon name="search" size={30} color="#900" /> 
+                            <Icon name="search" size={30} color="#87CEEB" /> 
                             <Text style={styles.info} onPress={() => this.searchVoter}>Search Voter</Text>
                         </View>
                     </TouchableOpacity>
                    
                     <TouchableOpacity activeOpacity = { .5 } onPress={ this.uninstallvapp }> 
                         <View style={styles.menuBox}>
-                            <Icon name="rocket" size={30} color="#900" /> 
+                            <Icon name="trash" size={30} color="#4682B4" /> 
                             <Text style={styles.info} onPress={() => this.uninstallvapp}>Uninstall</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity activeOpacity = { .5 } onPress={ this.refresh_voters }> 
                         <View style={styles.menuBox}>
-                            <Icon name="rocket" size={30} color="#900" /> 
+                            <Icon name="refresh" size={30} color="#6A5ACD" /> 
                             <Text style={styles.info} onPress={() => this.refresh_voters}>Refresh</Text>
                         </View>
                     </TouchableOpacity>
@@ -435,44 +440,52 @@ export class Dashboard extends Component {
 
                     <TouchableOpacity activeOpacity = { .5 } onPress={ () => this.click_update_reset_btn(this.state.btn_activity_status,0) }> 
                         <View style={styles.menuBox}>
-                            <Icon name="rocket" size={30} color="#900" /> 
+                            <Icon name="podcast" size={30} color="#FF69B4" /> 
                             <Text style={styles.info} onPress={() => this.click_update_reset_btn(this.state.btn_activity_status,0)}>{this.state.btn1_activity_name}</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity = { .5 } onPress={ () => this.click_update_reset_btn(this.state.btn_activity_status+1,1) }> 
                         <View style={styles.menuBox}>
-                            <Icon name="rocket" size={30} color="#900" /> 
+                            <Icon name="rocket" size={30} color="#00BFFF" /> 
                             <Text style={styles.info} onPress={() => this.click_update_reset_btn(this.state.btn_activity_status+1,1)}>{this.state.btn2_activity_name}</Text>
                         </View>
                     </TouchableOpacity>
                 </View> 
             </View>
            
-            <View style={styles.textBox}> 
-                <View style={styles.list}>
-                  <Text>Total Voters : {this.state.s_total_v}</Text>
+            <View> 
+                <View style={styles.box}>
+                  <Text>Total Voters : </Text>
+                   <Text style={styles.buttonbox}>{this.state.s_total_v}</Text>
                 </View> 
-                <View style={styles.list}>
-                  <Text>Total Male Voters : {this.state.s_total_m}</Text>
+                <View style={styles.box}>
+                  <Text>Total Male Voters : </Text>
+                  <Text style={styles.buttonbox}>{this.state.s_total_m}</Text>
                 </View> 
-                <View style={styles.list}>
-                  <Text>Total Female Voters : {this.state.s_total_f}</Text>
+                <View style={styles.box}>
+                  <Text>Total Female Voters :</Text>
+                  <Text style={styles.buttonbox}> {this.state.s_total_f}</Text>
                 </View> 
-                <View style={styles.list}>
-                  <Text>Total Other Voters : {this.state.s_total_t}</Text>
+                <View style={styles.box}>
+                  <Text>Total Other Voters : </Text>
+                  <Text style={styles.buttonbox}>{this.state.s_total_t}</Text>
                 </View> 
 
-                <View style={styles.list}>
-                  <Text>Polled Voters : {this.state.s_poll_v}</Text>
+                <View style={styles.box}>
+                  <Text>Polled Voters : </Text>
+                  <Text style={styles.buttonbox}>{this.state.s_poll_v}</Text>
                 </View> 
-                <View style={styles.list}>
-                  <Text>Polled Male : {this.state.s_poll_m}</Text>
+                <View style={styles.box}>
+                  <Text>Polled Male : </Text>
+                  <Text style={styles.buttonbox}>{this.state.s_poll_m}</Text>
                 </View> 
-                <View style={styles.list}>
-                  <Text>Polled Female : {this.state.s_poll_f}</Text>
+                <View style={styles.box}>
+                  <Text>Polled Female : </Text>
+                  <Text style={styles.buttonbox}>{this.state.s_poll_f}</Text>
                 </View> 
-                <View style={styles.list}>
-                  <Text>Polled Others : {this.state.s_poll_t}</Text>
+                <View style={styles.box}>
+                  <Text>Polled Others : </Text>
+                  <Text style={styles.buttonbox}>{this.state.s_poll_t}</Text>
                 </View> 
 
                 
@@ -548,7 +561,7 @@ const styles = StyleSheet.create({
       paddingHorizontal:16,
       fontSize:16,
       color:'#ffffff',
-      marginVertical: 10
+      marginVertical: 10,
     },
     button: {
       width:300,
@@ -565,6 +578,16 @@ const styles = StyleSheet.create({
       color:'#ffffff',
       textAlign:'center'
     },
+    buttonbox: { 
+      borderRadius: 25,
+      backgroundColor:'#1c313a', 
+      alignItems: 'center',
+      color:'#ffffff',
+      padding:3,
+      fontWeight:'800',
+      fontSize:14,
+         marginLeft: 'auto',
+    },
     buttonTextRight: {
       fontSize:16,
       fontWeight:'500',
@@ -576,30 +599,43 @@ const styles = StyleSheet.create({
       color:"#FFFFFF",
       fontWeight:'200', 
     },
-    bodyContent: {
-      flex: 1,
-      alignItems: 'center',
-      padding:30,
-    },
+  
     textInfo:{
-      fontSize:14,
+      fontSize:18,
       marginTop:10,
       color: "#696969",
+      fontWeight:'800',
+      borderColor : "#696969"
     },
+    box: {
+        padding:10,
+        marginBottom:2,
+        backgroundColor: '#FFFFFF',
+        flexDirection: 'row',
+        shadowColor: 'black',
+        shadowOpacity: .2,
+        shadowOffset: {
+          height:1,
+          width:-2
+        },
+        elevation:2
+      },
     bodyContent:{
       paddingTop:2,
       flexDirection: 'row',
-      flexWrap: 'wrap'
+      flexWrap: 'wrap',
+      alignItems :'center',
+      justifyContent: 'center',
     },
-    menuBox:{
+    menuBox:{ 
       backgroundColor: "#eaeaea",
       width:116,
       height:110,
-      alignItems: 'center',
-      justifyContent: 'center',
+      alignItems: 'center', 
       margin:7,
       shadowColor: 'black',
       shadowOpacity: .2,
+      padding:5,
       shadowOffset: {
         height:2,
         width:-2
@@ -636,8 +672,7 @@ const styles = StyleSheet.create({
     textBox: {  
     backgroundColor:'white',
     borderRadius: 10,
-    paddingHorizontal:16,
-    fontSize:16,
+    paddingHorizontal:16, 
     color:'#ffffff',
     marginVertical: 10,
   },
