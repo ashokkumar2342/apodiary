@@ -12,8 +12,8 @@ import { QueueUpdate } from './src/screens/QueueUpdate';
 function ActionBarIcon() {
   return (
     <Image
-    source={{uri : 'https://secure.gravatar.com/avatar/dbbab0050db2dbd84d4e2c844196ee0c?s=60&d=mm&r=g'}}
-    style={{ width: 40, height: 40, borderRadius: 40/2, marginLeft : 15 }} />
+    source={{uri : 'http://eageskool.com/skool/public/apk/po_logo_1.jpeg'}}
+    style={{ width: 390, height: 50,  }} />
   );
 }
 function HomeScreen({ navigation }) { 
@@ -41,17 +41,21 @@ function DashboardStak() {
   return (
     <DashboardStack.Navigator>
         <DashboardStack.Screen options={{          
-          
-          headerLeft : props => <ActionBarIcon {...props} />
+           title: '' ,
+           headerLeft : props => <ActionBarIcon {...props} 
+           />
         }} name="Dashboard" component={Dashboard} />
-        <DashboardStack.Screen  name="SearchVoter"  component={SearchVoter} options={{ 
-           title: 'Search Voter' ,
+        <DashboardStack.Screen  name="SearchVoter"  component={SearchVoter} options={{          
+           title: '' ,
+           headerLeft : props => <ActionBarIcon {...props} />
         }} />
         <DashboardStack.Screen  name="VotePoll"  component={VotePoll} options={{ 
-           title: 'Vote Poll' ,
+           title: '' ,
+           headerLeft : props => <ActionBarIcon {...props} />
         }} />
         <DashboardStack.Screen  name="QueueUpdate"  component={QueueUpdate} options={{ 
-           title: 'Queue Update' ,
+           title: '' ,
+           headerLeft : props => <ActionBarIcon {...props} />
         }} />
     </DashboardStack.Navigator>
   );
@@ -62,8 +66,16 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Loader">
-        <Stack.Screen name="Loader" component={Loader} />
-        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Loader" component={Loader} options={{
+          
+          headerLeft: () =>  null,
+           headerShown: false ,
+        }} />
+        <Stack.Screen name="Login"  component={Login} options={{
+          
+          headerLeft: () =>  null,
+           headerShown: false ,
+        }} />
         <Stack.Screen name="Dashboard" options={{
           
           headerLeft: () =>  null,

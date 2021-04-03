@@ -153,9 +153,7 @@ export class SearchVoter extends Component {
                     keyboardType="numeric"
                     onChangeText={text=> this.setState({ward_no:text})}
                     />
-                        
-                </View>
-                <View style={[styles.overlay, styles.bottomOverlay]}>
+                  
                     <TextInput style={styles.inputBox} 
                         underlineColorAndroid='rgba(0,0,0,0)' 
                         placeholder="Enter Serial No"
@@ -164,16 +162,15 @@ export class SearchVoter extends Component {
                         keyboardType="numeric"
                         onChangeText={text=> this.setState({print_srno:text})}
                         />
-                    <TouchableOpacity style={styles.button} >
+                   <TouchableOpacity style={styles.button} >
                     <Text
                     onPress={() => {  this.props.navigation.navigate('VotePoll',{serial_number:this.state.print_srno,ward_no:this.state.ward_no,input_source:2}) }}
                     style={styles.enterBarcodeManualButton}
                     title="Go"
-                   >Submit</Text>
-                        
-                        
-                    </TouchableOpacity>      
+                   >Submit</Text> 
+                    </TouchableOpacity>    
                 </View>
+                
                 </View>
           );
   }
@@ -225,9 +222,8 @@ const styles = {
     alignItems: 'center'
   },
   bottomOverlay2: {
-    bottom: 80,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    flexDirection: 'row',
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.4)', 
     justifyContent: 'center',
     alignItems: 'center'
   },

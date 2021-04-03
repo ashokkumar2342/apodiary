@@ -87,7 +87,7 @@ export class Dashboard extends Component {
   
     componentDidMount() {
 
-        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton.bind(this));
+        // BackHandler.addEventListener('hardwareBackPress', this.handleBackButton.bind(this));
 
         this.check_app_users_status();
         console.log("componentDidMount");
@@ -464,7 +464,7 @@ export class Dashboard extends Component {
                 </View> 
                 <View style={styles.box}>
                   <Text>Total Female Voters :</Text>
-                  <Text style={styles.buttonbox}> {this.state.s_total_f}</Text>
+                  <Text style={styles.buttonbox}>{this.state.s_total_f}</Text>
                 </View> 
                 <View style={styles.box}>
                   <Text>Total Other Voters : </Text>
@@ -586,7 +586,7 @@ const styles = StyleSheet.create({
       padding:3,
       fontWeight:'800',
       fontSize:14,
-         marginLeft: 'auto',
+      marginLeft: 'auto',
     },
     buttonTextRight: {
       fontSize:16,
@@ -614,6 +614,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         shadowColor: 'black',
         shadowOpacity: .2,
+        fontWeight: 'bold', 
         shadowOffset: {
           height:1,
           width:-2
@@ -636,6 +637,8 @@ const styles = StyleSheet.create({
       shadowColor: 'black',
       shadowOpacity: .2,
       padding:5,
+      alignItems :'center',
+      justifyContent: 'center',
       shadowOffset: {
         height:2,
         width:-2
@@ -647,8 +650,9 @@ const styles = StyleSheet.create({
       height:60,
     },
     info:{
-      fontSize:18,
-      color: "#696969",
+      fontSize:16,
+      color: "#696969", 
+      textAlign: "center",
     },
     list:{
       paddingVertical: 2,

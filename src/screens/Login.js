@@ -573,15 +573,18 @@ export class Login extends Component {
   render() {
       return (
         <View style={styles.container}> 
+        
+            <View style={{paddingVertical: 50}}>
             <Image
-               style={{width: 50, height: 50}}
-               source={{uri: 'http://eageskool.com/skool/public/front_asset/images/logo.png'}}
+               style={{width: 300, height: 100}}
+               source={{uri: 'http://eageskool.com/skool/public/apk/po_logo_3.jpeg'}}
                resizeMode={'cover'} // cover or contain its upto you view look
                />
+            </View>
       
 
-            <TouchableOpacity style={styles.buttonInput} >
-               <Text style={styles.buttonTextInput}  onPress={() => this.onPhoneNumberPressed()}>{this.state.mobile_no}</Text>
+            <TouchableOpacity style={styles.button} >
+               <Text style={styles.buttonText}  onPress={() => this.onPhoneNumberPressed()}>{this.state.mobile_no}</Text>
                
                 </TouchableOpacity> 
               <TouchableOpacity style={styles.button} >
@@ -597,7 +600,7 @@ export class Login extends Component {
 
 const styles = StyleSheet.create({
   container : {
-  	backgroundColor:'#455a64',
+  	backgroundColor:'#ffffff',
     flexGrow: 1,
     justifyContent:'center',
     alignItems: 'center'

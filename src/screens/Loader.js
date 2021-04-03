@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { View, Text , TextInput,TouchableOpacity,StyleSheet,Alert,Picker,AsyncStorage} from 'react-native';
+import { View, Text,Image , TextInput,TouchableOpacity,StyleSheet,Alert,Picker,AsyncStorage} from 'react-native';
 import MySqlConnection from 'react-native-my-sql-connection';
 import Button from 'react-native-material-ui';
 import { NavigationContainer } from '@react-navigation/native';
@@ -52,6 +52,7 @@ export class Loader extends Component {
       }
       console.log(m_check);
     },500);
+
   }
   
 	static navigationOptions={
@@ -66,7 +67,12 @@ export class Loader extends Component {
   render() {
     return (
       <View style={styles.container}>
-          <Text>Loading</Text>  
+     <Image
+          style={{width: 300, height: 100}}
+          source={{uri: 'http://eageskool.com/skool/public/apk/po_logo_3.jpeg'}}
+          resizeMode={'cover'} // cover or contain its upto you view look
+          /> 
+          <Text>Loading...</Text>  
   		</View>
 
     )
@@ -75,7 +81,7 @@ export class Loader extends Component {
 
 const styles = StyleSheet.create({
   container : {
-  	backgroundColor:'#455a64',
+  	backgroundColor:'#ffffff',
     flexGrow: 1,
     justifyContent:'center',
     alignItems: 'center'

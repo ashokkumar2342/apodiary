@@ -236,24 +236,25 @@ export class VotePoll extends Component {
             ios_backgroundColor="#3e3e3e"
             onValueChange={() => this.updateVotePolled()}
             value={this.state.vote_polled ==1 ?true:false}
+            style={{ transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }] }}
             />
             </View>
           
             <View style={styles.textBox}> 
-                <View style={styles.list}>
+                <View style={styles.box}>
                   <Text>EPIC No. : {this.state.epic_no}</Text>
                 </View> 
-                <View style={styles.list}>
+                <View style={styles.box}>
                   <Text>नाम : {this.state.name_l}</Text>
                 </View>
-                <View style={styles.list}>
+                <View style={styles.box}>
                   <Text>{this.state.r_fname} का नाम : {this.state.fname_l}</Text>
                 </View> 
 
-                <View style={styles.list}>
+                <View style={styles.box}>
                   <Text>वार्ड संख्या : {this.state.s_ward_no}</Text>
                 </View> 
-                <View style={styles.list}>
+                <View style={styles.box}>
                   <Text>क्रम संख्या : {this.state.serial_number}</Text>
                 </View> 
             </View>
@@ -288,11 +289,8 @@ const styles = StyleSheet.create({
     marginVertical: 10
   },
   textBox: { 
-    width:350,
-    height:300,
-    backgroundColor:'white',
-    borderRadius: 25,
-    paddingHorizontal:16,
+    width:350, 
+    backgroundColor:'white', 
     fontSize:16,
     color:'#ffffff',
     marginVertical: 10
@@ -364,14 +362,20 @@ const styles = StyleSheet.create({
     col: {
       width: '50%' // is 50% of container width
     },
-    textBox: {  
-    backgroundColor:'white',
-    borderRadius: 10,
-    paddingHorizontal:16,
-    fontSize:16,
-    color:'#ffffff',
-    marginVertical: 10,
-  },
+  box: {
+      padding:10,
+      marginBottom:2,
+      backgroundColor: '#FFFFFF',
+      flexDirection: 'row',
+      shadowColor: 'black',
+      shadowOpacity: .2,
+      fontWeight: 'bold', 
+      shadowOffset: {
+        height:1,
+        width:-2
+      },
+      elevation:2
+    },
 });
 
 export default VotePoll
